@@ -1,3 +1,5 @@
+using System.IO.Pipelines;
+
 public static class Arrays
 {
     /// <summary>
@@ -13,7 +15,20 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // STEP BY STEP
+        // 1. Create the array to hold the result
+        // 2. Create the for loop, starting at index 0, not going past the length, incrementing one by one.
+        // 3. To return each multiple, the number can by multiplied by the index. 
+        // 4. Add + 1 to the index so the output doesn't start at 0.
+        // 5. Return the result
+        double[] result = new double[length]; // 1
+
+        for (int i = 0; i < length; i++) // 2
+        {
+            result[i] = number * (i + 1);// 3 & 4
+        }
+
+        return result; // 5
     }
 
     /// <summary>
