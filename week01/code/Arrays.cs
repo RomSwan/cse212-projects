@@ -44,5 +44,21 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        // STEP BY STEP
+        // 1. Subtract the amount from the data count and put the result into a variable (splitList). 
+        //    This is the index of where to split the list.
+        // 2. Use .GetRange() and splitList to seperate the list into two parts (part1 & part2).
+        // 3. Clear data of its original value.
+        // 4. Use .AddRange() to data by adding part2 first, and part1 second.
+        var splitList = data.Count - amount; // 1
+
+        var part1 = data.GetRange(0, splitList); // 2
+        var part2 = data.GetRange(splitList, amount); // 2
+
+        data.Clear(); // 3
+        
+        data.AddRange(part2); // 4
+        data.AddRange(part1); // 4
     }
 }
