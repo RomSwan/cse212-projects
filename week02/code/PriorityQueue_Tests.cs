@@ -18,7 +18,6 @@ public class PriorityQueueTests
 
         priorityQueue.Dequeue();
 
-
         string expectedResult = "[Sebastian (Pri:1), Jennifer (Pri:2)]";
 
         Assert.AreEqual(expectedResult, priorityQueue.ToString());
