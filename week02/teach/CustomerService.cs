@@ -5,17 +5,20 @@
 public class CustomerService {
     public static void Run() {
         // Example code to see what's in the customer service queue:
-        // var cs = new CustomerService(10);
+        // var cs = new CustomerService(1);
         // Console.WriteLine(cs);
 
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Add a customer and then dequeue them.
+        // Expected Result: John (1234) : Refund
         Console.WriteLine("Test 1");
+        var service = new CustomerService(1);
+        service.AddNewCustomer();
+        service.ServeCustomer();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Line 94 and 95 were in wrong order causing the customer to dequeue before information could be displayed.
 
         Console.WriteLine("=================");
 
@@ -88,8 +91,8 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
         var customer = _queue[0];
+        _queue.RemoveAt(0);
         Console.WriteLine(customer);
     }
 
