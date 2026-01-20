@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.IO.Pipelines;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -21,8 +23,21 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> set = new HashSet<string>(); // Stores all words
+        List<string> pairs = new List<string>(); // Stores word pairs
+
+        foreach (var word in words)
+        {
+            set.Add(word); // Adds word to set
+
+            if (word[0] == word[1]) continue; // Skips double letters like "aa"
+
+            string inverse = $"{word[1]}{word[0]}"; // Creates inverse word
+
+            if (set.Contains(inverse)) pairs.Add($"{word} & {inverse}"); // If inverse exists, adds pair to pairs
+        }
+
+        return pairs.ToArray(); // Transforms to array
     }
 
     /// <summary>
@@ -36,13 +51,20 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
-    public static Dictionary<string, int> SummarizeDegrees(string filename)
+ public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename))
+        
+        var lines = File.ReadAllLines(filename);
+
+        foreach (var line in lines) // Goes row by row
         {
-            var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var columns = line.Split(","); // Divides into columns
+
+            string degree = columns[3]; // Finds the degree column
+
+            if (degrees.ContainsKey(degree)) degrees[degree]++; // Checks for degree and adds to degree count (value)
+            else degrees[degree] = 1; // If new degree, begins count (value) at 1
         }
 
         return degrees;
@@ -66,8 +88,27 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = word1.Replace(" ", "").ToUpper(); // Removes spaces and capitalises each letter
+        word2 = word2.Replace(" ", "").ToUpper();
+
+        if (word1.Length != word2.Length) return false; // Checks if words are same length
+
+        Dictionary<char, int> letters = new Dictionary<char, int>(); // Dictionary storing <letter, letter-count>
+
+        foreach (char letter in word1)
+        {
+            if (letters.ContainsKey(letter)) letters[letter]++; // Checks for letters and adds to letter count (value)
+            else letters[letter] = 1; // If new letter, begins count (value) at 1
+        }
+
+        foreach (char letter in word2)
+        {
+            if (!letters.ContainsKey(letter)) return false; // Checks if word2 contains letter not in word1
+            letters[letter]--; // Depletes letter count for letters in common between word1 and word2
+            if (letters[letter] < 0) return false; // Checks if word2 has extra letters (dog vs good)
+        }
+        
+        return true; // If all letter counts equal 0, returns true
     }
 
     /// <summary>
