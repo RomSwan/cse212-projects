@@ -98,7 +98,7 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     { // CountWaysToClimb_Large() still has an error.
-        remember = new Dictionary<int, decimal>();
+        if (remember is null) remember = new Dictionary<int, decimal>();
 
         // Base Cases
         if (s == 0) return 0;
@@ -109,7 +109,9 @@ public static class Recursion
         if (remember.ContainsKey(s)) return remember[s];
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + 
+                       CountWaysToClimb(s - 2, remember) + 
+                       CountWaysToClimb(s - 3, remember);
 
         remember[s] = ways;
 
@@ -138,8 +140,8 @@ public static class Recursion
         }
 
         int wild = pattern.IndexOf('*');
-        string one = pattern[..wild] + '1' + pattern[wild..];
-        string zero = pattern[..wild] + '0' + pattern[wild..];
+        string one = pattern[..wild] + '1' + pattern[(wild + 1)..];
+        string zero = pattern[..wild] + '0' + pattern[(wild + 1)..];
 
         WildcardBinary(one, results);
         WildcardBinary(zero, results);
